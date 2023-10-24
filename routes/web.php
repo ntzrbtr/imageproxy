@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::view('/', 'welcome')
+    ->name('home');
+
+Route::get('/image/{filename}', \App\Http\Controllers\ImageController::class)
+    ->where('filename', '.*')
+    ->name('image');
