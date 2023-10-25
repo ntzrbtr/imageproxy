@@ -6,6 +6,9 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
+/**
+ * Event service provider
+ */
 class EventServiceProvider extends ServiceProvider
 {
     /**

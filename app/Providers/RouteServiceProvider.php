@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * Route service provider
+ */
 class RouteServiceProvider extends ServiceProvider
 {
     /**
