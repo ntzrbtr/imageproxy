@@ -18,10 +18,10 @@ class GlideServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             \League\Glide\Server::class,
-            static function (): \League\Glide\Server {
+            function (): \League\Glide\Server {
                 // Set up filesystems.
                 $source = new \League\Flysystem\Filesystem(
-                    new \Netzarbeiter\FlysystemHttp\HttpAdapterStream(config('image.source'))
+                    new \Netzarbeiter\FlysystemHttp\HttpAdapterPsr($this->getClient())
                 );
                 $cache = new \League\Flysystem\Filesystem(
                     new \League\Flysystem\Local\LocalFilesystemAdapter(config('image.cache'))
@@ -57,5 +57,24 @@ class GlideServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+    }
+
+    /**
+     * Get the HTTP client.
+     *
+     * @return \Psr\Http\Client\ClientInterface
+     */
+    protected function getClient(): \Psr\Http\Client\ClientInterface
+    {
+        $options = [
+            'base_uri' => config('image.source'),
+            'follow_redirects' => true,
+        ];
+
+        if (config('image.no_verify')) {
+            $options['verify'] = false;
+        }
+
+        return new \GuzzleHttp\Client($options);
     }
 }

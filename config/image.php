@@ -46,4 +46,15 @@ return [
 
     'driver' => env('IMAGE_DRIVER', 'gd'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Skip SSL verification
+    |--------------------------------------------------------------------------
+    |
+    | Shall we skip SSL verification when fetching images?
+    |
+    */
+
+    'no_verify' => (bool)env('IMAGE_NO_VERIFY', false),
+
 ];
