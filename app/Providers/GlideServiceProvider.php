@@ -16,13 +16,22 @@ class GlideServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // Register source filesystem.
         $this->app->singleton(
-            \League\Glide\Server::class,
-            function (): \League\Glide\Server {
-                // Set up filesystems.
-                $source = new \League\Flysystem\Filesystem(
+            'image.source',
+            function (): \League\Flysystem\FilesystemOperator {
+                return new \League\Flysystem\Filesystem(
                     new \Netzarbeiter\FlysystemHttp\HttpAdapterPsr($this->getClient())
                 );
+            }
+        );
+
+        // Register Glide server.
+        $this->app->singleton(
+            \League\Glide\Server::class,
+            function (\Illuminate\Contracts\Foundation\Application $app): \League\Glide\Server {
+                // Set up filesystems.
+                $source = $app->make('image.source');
                 $cache = new \League\Flysystem\Filesystem(
                     new \League\Flysystem\Local\LocalFilesystemAdapter(config('image.cache'))
                 );
