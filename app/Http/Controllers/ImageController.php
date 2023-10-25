@@ -10,6 +10,15 @@ namespace App\Http\Controllers;
 class ImageController extends Controller
 {
     /**
+     * ImageController constructor.
+     *
+     * @param \League\Glide\Server $glide
+     */
+    public function __construct(protected \League\Glide\Server $glide)
+    {
+    }
+
+    /**
      * Handle requests for images.
      *
      * @param \Illuminate\Http\Request $request
@@ -18,11 +27,14 @@ class ImageController extends Controller
      */
     public function __invoke(\Illuminate\Http\Request $request, string $filename): \Illuminate\Http\Response
     {
-        $source = config('image.source');
+        $width = $request->input('width');
+        $params = [];
+        if (is_numeric($width)) {
+            $params = [
+                'w' => (int)$width,
+            ];
+        }
 
-        return response()->json([
-            'url' => "$source/$filename",
-            'width' => $request->input('width', null),
-        ]);
+        return $this->glide->getImageResponse($filename, $params);
     }
 }
