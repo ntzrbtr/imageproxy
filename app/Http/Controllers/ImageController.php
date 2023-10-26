@@ -35,8 +35,14 @@ class ImageController extends Controller
 
         // Compose parameters.
         $params = [];
+        // 1. Resizing.
         if ($width) {
             $params['w'] = $width;
+        }
+        // 2. Image format.
+        $format = $this->getFormat();
+        if ($format) {
+            $params['fm'] = $format;
         }
 
         // Get response.
@@ -51,5 +57,43 @@ class ImageController extends Controller
             ]);
 
         return $response;
+    }
+
+    /**
+     * Get image format.
+     *
+     * @return string|null
+     */
+    protected function getFormat(): ?string
+    {
+        if (config('image.use_avif') && $this->browserSupportsAVIF() && config('image.driver') !== 'gd') {
+            return 'avif';
+        }
+
+        if (config('image.use_webp') && $this->browserSupportsWebP()) {
+            return 'webp';
+        }
+
+        return null;
+    }
+
+    /**
+     * Get whether the browser supports WebP.
+     *
+     * @return bool
+     */
+    protected function browserSupportsWebP(): bool
+    {
+        return str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'image/webp');
+    }
+
+    /**
+     * Get whether the browser supports AVIF.
+     *
+     * @return bool
+     */
+    protected function browserSupportsAVIF(): bool
+    {
+        return str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'image/avif');
     }
 }

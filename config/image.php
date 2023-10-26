@@ -57,4 +57,16 @@ return [
 
     'no_verify' => (bool)env('IMAGE_NO_VERIFY', false),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Format support
+    |--------------------------------------------------------------------------
+    |
+    | Shall we use alternative image formats if possible?
+    |
+    */
+
+    'use_avif' => (bool)env('IMAGE_USE_AVIF', false),
+    'use_webp' => (bool)env('IMAGE_USE_WEBP', false),
+
 ];
