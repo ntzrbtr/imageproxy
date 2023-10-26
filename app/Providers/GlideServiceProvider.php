@@ -56,6 +56,9 @@ class GlideServiceProvider extends ServiceProvider
                 // Set response factory.
                 $server->setResponseFactory(new \League\Glide\Responses\LaravelResponseFactory());
 
+                // Cache images with file extensions (easier for debugging).
+                $server->setCacheWithFileExtensions(true);
+
                 return $server;
             }
         );
