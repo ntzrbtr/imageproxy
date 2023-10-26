@@ -51,3 +51,11 @@ Imageproxy is configured via environment variables (like any other Laravel app).
 | `IMAGE_NO_VERIFY` | Disable SSL certificate verification for the upstream server    | `false` |
 | `IMAGE_USE_AVIF`  | Use AVIF format if the browser supports it?                     | `false` |
 | `IMAGE_USE_WEBP`  | Use WebP format if the browser supports it?                     | `false` |
+
+## Perfomance
+
+To test the performance of your Imageproxy installation, you can use the following command:
+
+```bash
+curl -w "@curl-format.txt" -o /dev/null -s "https://imageproxy.example/images/products/image.jpg/200"
+```
