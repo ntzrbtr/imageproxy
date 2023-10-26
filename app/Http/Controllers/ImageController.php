@@ -21,18 +21,22 @@ class ImageController extends Controller
     /**
      * Handle requests for images.
      *
-     * @param \Illuminate\Http\Request $request
      * @param string $filename
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    public function __invoke(\Illuminate\Http\Request $request, string $filename): \Illuminate\Http\Response
+    public function __invoke(string $filename): \Symfony\Component\HttpFoundation\StreamedResponse
     {
-        $width = $request->input('width');
+        // Split away size parameter at the end of the filename.
+        $width = null;
+        if (preg_match('~^(.*)/(\d+)$~', $filename, $matches)) {
+            $filename = $matches[1];
+            $width = (int)$matches[2];
+        }
+
+        // Compose parameters.
         $params = [];
-        if (is_numeric($width)) {
-            $params = [
-                'w' => (int)$width,
-            ];
+        if ($width) {
+            $params['w'] = $width;
         }
 
         return $this->glide->getImageResponse($filename, $params);
