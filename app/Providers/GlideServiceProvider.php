@@ -38,7 +38,7 @@ class GlideServiceProvider extends ServiceProvider
 
                 // Set up manipulators.
                 $manipulators = [
-                    new \League\Glide\Manipulators\Size(config('image.max_size')),
+                    new \League\Glide\Manipulators\Size(pow(config('image.max_size'), 2)),
                     new \League\Glide\Manipulators\Encode(),
                 ];
 
