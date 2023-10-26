@@ -39,6 +39,17 @@ class ImageController extends Controller
             $params['w'] = $width;
         }
 
-        return $this->glide->getImageResponse($filename, $params);
+        // Get response.
+        $response = $this->glide->getImageResponse($filename, $params);
+
+        // Write log.
+        \Illuminate\Support\Facades\Log::channel('image')
+            ->debug('Image requested', [
+                'filename' => $filename,
+                'params' => $params,
+                'status' => $response->getStatusCode(),
+            ]);
+
+        return $response;
     }
 }
