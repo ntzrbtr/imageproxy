@@ -29,6 +29,11 @@ class SimpleFormatStrategy extends AbstractFormatStrategy
      */
     public function getFormat(\Illuminate\Http\Request $request, string $filename): ?string
     {
+        // Return immediately if WebP support is disabled.
+        if (!config('image.use_webp')) {
+            return null;
+        }
+
         // Get mime type from filename.
         $mimeType = $this->detector->detectMimeTypeFromPath($filename);
 
