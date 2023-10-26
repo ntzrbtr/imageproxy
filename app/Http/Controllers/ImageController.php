@@ -25,7 +25,7 @@ class ImageController extends Controller
         $width = null;
         if (preg_match('~^(.*)/(\d+)$~', $filename, $matches)) {
             $filename = $matches[1];
-            $width = (int) $matches[2];
+            $width = (int)$matches[2];
         }
 
         // Compose parameters.

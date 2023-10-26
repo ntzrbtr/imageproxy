@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'no_verify' => (bool) env('IMAGE_NO_VERIFY', false),
+    'no_verify' => (bool)env('IMAGE_NO_VERIFY', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -66,7 +66,7 @@ return [
     |
     */
 
-    'use_avif' => (bool) env('IMAGE_USE_AVIF', false),
-    'use_webp' => (bool) env('IMAGE_USE_WEBP', false),
+    'use_avif' => (bool)env('IMAGE_USE_AVIF', false),
+    'use_webp' => (bool)env('IMAGE_USE_WEBP', false),
 
 ];

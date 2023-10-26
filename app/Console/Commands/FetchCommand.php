@@ -28,7 +28,7 @@ class FetchCommand extends \Illuminate\Console\Command
         $source = app('image.source');
 
         // Check if the image exists.
-        if (! $source->fileExists($filename)) {
+        if (!$source->fileExists($filename)) {
             $this->error("Image {$filename} does not exist");
 
             return;
