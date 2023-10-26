@@ -11,16 +11,27 @@ class ImageController extends Controller
 {
     /**
      * ImageController constructor.
+     *
+     * @param \League\Glide\Server $glide
+     * @param \App\Strategies\FormatStrategyInterface $formatStrategy
      */
-    public function __construct(protected \League\Glide\Server $glide)
-    {
+    public function __construct(
+        protected \League\Glide\Server $glide,
+        protected \App\Strategies\FormatStrategyInterface $formatStrategy
+    ) {
     }
 
     /**
      * Handle requests for images.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $filename
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    public function __invoke(string $filename): \Symfony\Component\HttpFoundation\StreamedResponse
-    {
+    public function __invoke(
+        \Illuminate\Http\Request $request,
+        string $filename
+    ): \Symfony\Component\HttpFoundation\StreamedResponse {
         // Split away size parameter at the end of the filename.
         $width = null;
         if (preg_match('~^(.*)/(\d+)$~', $filename, $matches)) {
@@ -35,7 +46,7 @@ class ImageController extends Controller
             $params['w'] = $width;
         }
         // 2. Image format.
-        $format = $this->getFormat();
+        $format = $this->formatStrategy->getFormat($request, $filename);
         if ($format) {
             $params['fm'] = $format;
         }
@@ -52,37 +63,5 @@ class ImageController extends Controller
             ]);
 
         return $response;
-    }
-
-    /**
-     * Get image format.
-     */
-    protected function getFormat(): ?string
-    {
-        if (config('image.use_avif') && $this->browserSupportsAVIF() && config('image.driver') !== 'gd') {
-            return 'avif';
-        }
-
-        if (config('image.use_webp') && $this->browserSupportsWebP()) {
-            return 'webp';
-        }
-
-        return null;
-    }
-
-    /**
-     * Get whether the browser supports WebP.
-     */
-    protected function browserSupportsWebP(): bool
-    {
-        return str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'image/webp');
-    }
-
-    /**
-     * Get whether the browser supports AVIF.
-     */
-    protected function browserSupportsAVIF(): bool
-    {
-        return str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'image/avif');
     }
 }

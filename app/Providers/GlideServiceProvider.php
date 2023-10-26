@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Strategies\FormatStrategyInterface;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use League\Glide\Server;
 
 /**
  * Service provider for Glide
@@ -28,8 +31,8 @@ class GlideServiceProvider extends ServiceProvider
 
         // Register Glide server.
         $this->app->singleton(
-            \League\Glide\Server::class,
-            function (\Illuminate\Contracts\Foundation\Application $app): \League\Glide\Server {
+            Server::class,
+            function (Application $app): Server {
                 // Set up filesystems.
                 $source = $app->make('image.source');
                 $cache = new \League\Flysystem\Filesystem(
@@ -51,7 +54,7 @@ class GlideServiceProvider extends ServiceProvider
                 $api = new \League\Glide\Api\Api($imageManager, $manipulators);
 
                 // Create server.
-                $server = new \League\Glide\Server($source, $cache, $api);
+                $server = new Server($source, $cache, $api);
 
                 // Set response factory.
                 $server->setResponseFactory(new \League\Glide\Responses\LaravelResponseFactory());
@@ -60,6 +63,14 @@ class GlideServiceProvider extends ServiceProvider
                 $server->setCacheWithFileExtensions(true);
 
                 return $server;
+            }
+        );
+
+        // Register format stragegy.
+        $this->app->singleton(
+            FormatStrategyInterface::class,
+            function (Application $app): FormatStrategyInterface {
+                return new \App\Strategies\SimpleFormatStrategy($app->make('image.source'));
             }
         );
     }
