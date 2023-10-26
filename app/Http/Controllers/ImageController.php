@@ -11,8 +11,6 @@ class ImageController extends Controller
 {
     /**
      * ImageController constructor.
-     *
-     * @param \League\Glide\Server $glide
      */
     public function __construct(protected \League\Glide\Server $glide)
     {
@@ -20,9 +18,6 @@ class ImageController extends Controller
 
     /**
      * Handle requests for images.
-     *
-     * @param string $filename
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
     public function __invoke(string $filename): \Symfony\Component\HttpFoundation\StreamedResponse
     {
@@ -30,7 +25,7 @@ class ImageController extends Controller
         $width = null;
         if (preg_match('~^(.*)/(\d+)$~', $filename, $matches)) {
             $filename = $matches[1];
-            $width = (int)$matches[2];
+            $width = (int) $matches[2];
         }
 
         // Compose parameters.
@@ -61,8 +56,6 @@ class ImageController extends Controller
 
     /**
      * Get image format.
-     *
-     * @return string|null
      */
     protected function getFormat(): ?string
     {
@@ -79,8 +72,6 @@ class ImageController extends Controller
 
     /**
      * Get whether the browser supports WebP.
-     *
-     * @return bool
      */
     protected function browserSupportsWebP(): bool
     {
@@ -89,8 +80,6 @@ class ImageController extends Controller
 
     /**
      * Get whether the browser supports AVIF.
-     *
-     * @return bool
      */
     protected function browserSupportsAVIF(): bool
     {

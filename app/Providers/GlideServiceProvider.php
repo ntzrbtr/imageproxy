@@ -74,8 +74,6 @@ class GlideServiceProvider extends ServiceProvider
 
     /**
      * Get the HTTP client.
-     *
-     * @return \Psr\Http\Client\ClientInterface
      */
     protected function getClient(): \Psr\Http\Client\ClientInterface
     {

@@ -5,12 +5,12 @@ namespace App\Console\Commands;
 class FetchCommand extends \Illuminate\Console\Command
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected $signature = 'fetch {filename}';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected $description = 'Fetch an image from the upstream server and show its metadata';
 
@@ -28,8 +28,9 @@ class FetchCommand extends \Illuminate\Console\Command
         $source = app('image.source');
 
         // Check if the image exists.
-        if (!$source->fileExists($filename)) {
+        if (! $source->fileExists($filename)) {
             $this->error("Image {$filename} does not exist");
+
             return;
         }
 
