@@ -11,9 +11,6 @@ class ImageController extends Controller
 {
     /**
      * ImageController constructor.
-     *
-     * @param \League\Glide\Server $glide
-     * @param \App\Strategies\FormatStrategyInterface $formatStrategy
      */
     public function __construct(
         protected \League\Glide\Server $glide,
@@ -23,10 +20,6 @@ class ImageController extends Controller
 
     /**
      * Handle requests for images.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param string $filename
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
     public function __invoke(
         \Illuminate\Http\Request $request,
@@ -36,7 +29,7 @@ class ImageController extends Controller
         $width = null;
         if (preg_match('~^(.*)/(\d+)$~', $filename, $matches)) {
             $filename = $matches[1];
-            $width = (int)$matches[2];
+            $width = (int) $matches[2];
         }
 
         // Compose parameters.

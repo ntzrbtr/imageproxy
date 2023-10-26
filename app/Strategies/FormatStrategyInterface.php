@@ -11,10 +11,6 @@ interface FormatStrategyInterface
 {
     /**
      * Get image format to use.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param string $filename
-     * @return string|null
      */
     public function getFormat(\Illuminate\Http\Request $request, string $filename): ?string;
 }

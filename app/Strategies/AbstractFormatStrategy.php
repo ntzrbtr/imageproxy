@@ -13,8 +13,6 @@ abstract class AbstractFormatStrategy implements FormatStrategyInterface
 {
     /**
      * AbstractFormatStrategy constructor.
-     *
-     * @param \League\Flysystem\FilesystemOperator $source
      */
     public function __construct(protected \League\Flysystem\FilesystemOperator $source)
     {

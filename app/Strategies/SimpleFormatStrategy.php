@@ -11,15 +11,11 @@ class SimpleFormatStrategy extends AbstractFormatStrategy
 {
     /**
      * Mime type detector
-     *
-     * @var \League\MimeTypeDetection\MimeTypeDetector
      */
     protected \League\MimeTypeDetection\MimeTypeDetector $detector;
 
     /**
      * SimpleFormatStrategy constructor.
-     *
-     * @param \League\Flysystem\FilesystemOperator $source
      */
     public function __construct(protected \League\Flysystem\FilesystemOperator $source)
     {
@@ -29,7 +25,7 @@ class SimpleFormatStrategy extends AbstractFormatStrategy
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getFormat(\Illuminate\Http\Request $request, string $filename): ?string
     {
@@ -38,6 +34,7 @@ class SimpleFormatStrategy extends AbstractFormatStrategy
 
         // Decide the target format.
         $supportsWebP = $this->browserSupportsWebP($request);
+
         return match (true) {
             // If we have WebP, then use it for JPEG and PNG images.
             $supportsWebP => match ($mimeType) {
@@ -46,7 +43,7 @@ class SimpleFormatStrategy extends AbstractFormatStrategy
             },
 
             // If the browser does NOT support WebP, then use JPEG for WebP images.
-            !$supportsWebP => match ($mimeType) {
+            ! $supportsWebP => match ($mimeType) {
                 'image/webp' => 'jpg',
                 default => null,
             },
