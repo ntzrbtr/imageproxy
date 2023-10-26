@@ -23,8 +23,13 @@ class GlideServiceProvider extends ServiceProvider
         $this->app->singleton(
             'image.source',
             function (): \League\Flysystem\FilesystemOperator {
+                $options = [];
+                if (config('image.no_verify')) {
+                    $options['verify'] = false;
+                }
+
                 return new \League\Flysystem\Filesystem(
-                    new \Netzarbeiter\FlysystemHttp\HttpAdapterPsr($this->getClient())
+                    \Netzarbeiter\FlysystemHttp\HttpAdapterPsr::fromUrl(config('image.source'), $options)
                 );
             }
         );
@@ -81,22 +86,5 @@ class GlideServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-    }
-
-    /**
-     * Get the HTTP client.
-     */
-    protected function getClient(): \Psr\Http\Client\ClientInterface
-    {
-        $options = [
-            'base_uri' => config('image.source'),
-            'follow_redirects' => true,
-        ];
-
-        if (config('image.no_verify')) {
-            $options['verify'] = false;
-        }
-
-        return new \GuzzleHttp\Client($options);
     }
 }
